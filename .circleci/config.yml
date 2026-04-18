@@ -1,13 +1,24 @@
-
 version: 2.1
-# use a package of configuration call an orb.
-orbs: 
-# declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# orchestrate or schedule a set of jobs
+
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.10
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            pip install -r requirements.txt
+
+      - run:
+          name: Run tests
+          command: |
+            pytest
+
 workflows:
-  # name the workflow "welcom"
-  welcome: 
-  # run the welcome/run job in its own container
+  build_and_test:
     jobs:
-      - welcome/run
+      - build
